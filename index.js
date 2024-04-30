@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.PASSWORD}@atlascluster.pwovdtc.mongodb.net/?retryWrites=true&w=majority`;
 
 const client = new MongoClient(uri, { serverApi: { version: ServerApiVersion.v1, strict: true, deprecationErrors: true, } });
-async function run() {
+  async function run() {
     try {
         const productCollection = client.db('shop').collection('products')
         const Collection = client.db('shop').collection('collection')
@@ -34,7 +34,7 @@ async function run() {
         app.get('/products', async(req ,res) =>{
             const page = req.query.page;
             const size = parseInt(req.query.size);
-            console.log(page, size );
+            // console.log(page, size );
             const query = {}
             const data =  productCollection.find(query)
             const products = await data.skip(page*size).limit(size). toArray()
@@ -58,7 +58,7 @@ async function run() {
                 $set: {
                     name:data.name,
                     price:data.price,
-                    rating:data.rating,
+                    quantity:data.quantity,
                     image:data.image,
                     category:data.category,                  
                 },
@@ -94,7 +94,7 @@ async function run() {
         const requesID = req.params.id;
         const id = {_id: new ObjectId(requesID)};
         const data = await Collection.findOne(id)
-        res.send(data)
+        res.send(data)        
     })
     app.put('/collection/:id', async (req, res) => {
         const requestID = req.params.id;
@@ -131,3 +131,4 @@ run().catch(err => console.log(err))
 app.listen(port, () => {
     console.log(`yoyo server raning on port ${port}`)
 })
+        
